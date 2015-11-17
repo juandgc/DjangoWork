@@ -1,0 +1,26 @@
+.carousel-control.left{
+	background-image:linear-gradient(to right,rgba(0,0,0,0) 0,rgba(0,0,0,.0001) 100%)
+}
+.carousel-control.right{
+	background-image: linear-gradient(to right, transparent 0px, rgba(0, 0, 0, 0) 100%);
+}
+.icon-prev, .icon-next{
+	color: rgb(192, 0, 14);
+}
+.titulo_pagina{
+    display: inline-block;
+    padding-top: 10px;
+    padding-left: 8px;
+    font-size: 30px;
+}
+
+.logo_univalle{
+    border-radius: 10px;
+}
+
+.profile-element{
+    text-align: center;
+}
+.logo-footer{
+	padding-left: 29px;
+}

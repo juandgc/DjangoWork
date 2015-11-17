@@ -1,0 +1,167 @@
+{% extends "index.html" %}
+
+{% load staticfiles %}
+
+{% block css %}
+    {{block.super}}
+    <link href="{% static 'css/plugins/datapicker/datepicker3.css' %}" rel="stylesheet">
+    <link href="{% static 'css/plugins/chosen/chosen.css' %}" rel="stylesheet">
+    <style type="text/css">
+        ul.errorlist {
+            margin: 0;
+            padding: 0;
+        }
+        .errorlist li {
+            background-color: red;
+            color: white;
+            display: block;
+            font-size: 10px;
+            margin: 0 0 3px;
+            padding: 4px 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block titulo %}
+<div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>Creación de un Capitulo de Libro</h2>
+
+            </div>
+    </div>
+
+{% endblock %}
+
+{% block caplibro%}
+class="active"
+{% endblock %}
+{% block caplibro_uno %}
+class="active"
+{% endblock %}
+
+{% block content %}
+    <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-7 " >
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Capitulo de Libro</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+
+
+
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            {% if exito %}
+                                <div class="alert alert-success alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    <i class="fa fa-check"></i> Se ha registrado el capitulo de libro con exito!
+                                </div>
+                            {% endif %}
+
+                            <form class="form-horizontal" method="post" action="">
+                                {% csrf_token %}
+
+
+                                <div class="form-group">
+                                    {{form.autores.errors}}
+                                    <label class="col-lg-2 control-label">{{form.autores.label}}</label>
+                                    <div class="col-lg-6">
+                                        {{form.autores}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.titulo_capitulo_libro.errors}}
+                                    <label class="col-lg-2 control-label">{{form.titulo_capitulo_libro.label}}</label>
+                                    <div class="col-lg-6">
+                                        {{form.titulo_capitulo_libro}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.titulo_libro.errors}}
+                                    <label class="col-lg-2 control-label">{{form.titulo_libro.label}}</label>
+                                    <div class="col-lg-6">{{form.titulo_libro}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.ISBN_libro.errors}}
+                                    <label class="col-lg-2 control-label">{{form.ISBN_libro.label}}</label>
+                                    <div class="col-lg-6">{{form.ISBN_libro}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.anio_presentacion.errors}}
+                                    <label class="col-lg-2 control-label">{{form.anio_presentacion.label}}</label>
+                                    <div class="col-lg-6">{{form.anio_presentacion}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.mes_presentacion.errors}}
+                                    <label class="col-lg-2 control-label">{{form.mes_presentacion.label}}</label>
+                                    <div class="col-lg-6">
+                                        {{form.mes_presentacion}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-14">
+                                        <button class="btn btn-lg btn-danger" type="submit">Registrar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+   <!-- Data picker -->
+   <script src="{% static 'js/plugins/datapicker/bootstrap-datepicker.js' %}"></script>
+   <!-- Chosen -->
+    <script src="{% static 'js/plugins/chosen/chosen.jquery.js' %}"></script>
+   <script type="text/javascript">
+            $('#data_1 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('#data_3 .input-group.date').datepicker({
+                startView: 2,
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true
+            });
+
+            $('#data_4 .input-group.date').datepicker({
+                minViewMode: 1,
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            var config = {
+                '.chosen-select'           : {},
+                '.chosen-select-deselect'  : {allow_single_deselect:true},
+                '.chosen-select-no-single' : {disable_search_threshold:10},
+                '.chosen-select-no-results': {no_results_text:'Oops, no se encontró nada!'},
+                '.chosen-select-width'     : {width:"95%"}
+            }
+            for (var selector in config) {
+                $(selector).chosen(config[selector]);
+            }
+
+   </script>
+{% endblock %}

@@ -1,0 +1,237 @@
+{% extends "index.html" %}
+
+{% load staticfiles %}
+
+{% block css %}
+    {{block.super}}
+    <link href="{% static 'css/plugins/datapicker/datepicker3.css' %}" rel="stylesheet">
+    <link href="{% static 'css/plugins/chosen/chosen.css' %}" rel="stylesheet">
+    <style type="text/css">
+        ul.errorlist {
+            margin: 0;
+            padding: 0;
+        }
+        .errorlist li {
+            background-color: red;
+            color: white;
+            display: block;
+            font-size: 10px;
+            margin: 0 0 3px;
+            padding: 4px 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block titulo %}
+<div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>Creación de un Artículo</h2>
+
+            </div>
+    </div>
+
+{% endblock %}
+
+{% block articulo%}
+class="active"
+{% endblock %}
+{% block articulo_uno %}
+class="active"
+{% endblock %}
+
+{% block content %}
+    <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-7 " >
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Artículo</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+
+
+
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            {% if exito %}
+                                <div class="alert alert-success alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    <i class="fa fa-check"></i> Se ha registrado el articulo con exito!
+                                </div>
+                            {% endif %}
+
+                            <form class="form-horizontal" method="post" action="">
+                                {% csrf_token %}
+
+
+                                <div class="form-group">
+                                    {{form.autores.errors}}
+                                    <label class="col-lg-2 control-label">{{form.autores.label}}</label>
+                                    <div class="col-lg-6">
+                                        {{form.autores}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.tipo_articulo.errors}}
+                                    <label class="col-lg-2 control-label">{{form.tipo_articulo.label}}</label>
+                                    <div class="col-lg-6">
+                                        {{form.tipo_articulo}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.titulo_articulo.errors}}
+                                    <label class="col-lg-2 control-label">{{form.titulo_articulo.label}}</label>
+                                    <div class="col-lg-6">{{form.titulo_articulo}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.pagina_inicial.errors}}
+                                    <label class="col-lg-2 control-label">{{form.pagina_inicial.label}}</label>
+                                    <div class="col-lg-6">{{form.pagina_inicial}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.pagina_final.errors}}
+                                    <label class="col-lg-2 control-label">{{form.pagina_final.label}}</label>
+                                    <div class="col-lg-6">{{form.pagina_final}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.idioma.errors}}
+                                    <label class="col-lg-2 control-label">{{form.idioma.label}}</label>
+                                    <div class="col-lg-6">
+                                        {{form.idioma}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.anio.errors}}
+                                    <label class="col-lg-2 control-label">{{form.anio.label}}</label>
+                                    <div class="col-lg-6">{{form.anio}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.mes.errors}}
+                                    <label class="col-lg-2 control-label">{{form.mes.label}}</label>
+                                    <div class="col-lg-6">
+                                        {{form.mes}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.revista.errors}}
+                                    <label class="col-lg-2 control-label">{{form.revista.label}}</label>
+                                    <div class="col-lg-6">{{form.revista}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.volumen.errors}}
+                                    <label class="col-lg-2 control-label">{{form.volumen.label}}</label>
+                                    <div class="col-lg-6">{{form.volumen}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.fasciculo.errors}}
+                                    <label class="col-lg-2 control-label">{{form.fasciculo.label}}</label>
+                                    <div class="col-lg-6">{{form.fasciculo}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.serie_revista.errors}}
+                                    <label class="col-lg-2 control-label">{{form.serie_revista.label}}</label>
+                                    <div class="col-lg-6">{{form.serie_revista}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.pais.errors}}
+                                    <label class="col-lg-2 control-label">{{form.pais.label}}</label>
+                                    <div class="col-lg-6">{{form.pais}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.ciudad.errors}}
+                                    <label class="col-lg-2 control-label">{{form.ciudad.label}}</label>
+                                    <div class="col-lg-6">{{form.ciudad}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.medio_divulgacion.errors}}
+                                    <label class="col-lg-2 control-label">{{form.medio_divulgacion.label}}</label>
+                                    <div class="col-lg-6">
+                                        {{form.medio_divulgacion}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.sitio_web.errors}}
+                                    <label class="col-lg-2 control-label">{{form.sitio_web.label}}</label>
+                                    <div class="col-lg-6">{{form.sitio_web}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.DOI.errors}}
+                                    <label class="col-lg-2 control-label">{{form.DOI.label}}</label>
+                                    <div class="col-lg-6">{{form.DOI}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-14">
+                                        <button class="btn btn-lg btn-danger" type="submit">Registrar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+   <!-- Data picker -->
+   <script src="{% static 'js/plugins/datapicker/bootstrap-datepicker.js' %}"></script>
+   <!-- Chosen -->
+    <script src="{% static 'js/plugins/chosen/chosen.jquery.js' %}"></script>
+   <script type="text/javascript">
+            $('#data_1 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('#data_3 .input-group.date').datepicker({
+                startView: 2,
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true
+            });
+
+            $('#data_4 .input-group.date').datepicker({
+                minViewMode: 1,
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            var config = {
+                '.chosen-select'           : {},
+                '.chosen-select-deselect'  : {allow_single_deselect:true},
+                '.chosen-select-no-single' : {disable_search_threshold:10},
+                '.chosen-select-no-results': {no_results_text:'Oops, no se encontró nada!'},
+                '.chosen-select-width'     : {width:"95%"}
+            }
+            for (var selector in config) {
+                $(selector).chosen(config[selector]);
+            }
+
+   </script>
+{% endblock %}

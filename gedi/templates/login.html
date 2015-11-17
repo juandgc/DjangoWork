@@ -1,0 +1,56 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GEDI | Login</title>
+
+    <link href="{%static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{%static 'font-awesome/css/font-awesome.css' %}" rel="stylesheet">
+
+    <link href="{%static 'css/animate.css' %}" rel="stylesheet">
+    <link href="{%static 'css/style.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">GEDI</h1>
+
+            </div>
+            <h3>Grupo de Estudios Doctorales en Informática</h3>
+
+            <p>Por favor inicie sesión</p>
+            <form class="m-t" role="form" action="" method="post">
+                {% csrf_token %}
+
+                <p style="color:red;">{{error}}</p>
+                <div class="form-group">
+                    {{form.username}}
+                </div>
+                <div class="form-group">
+                    {{form.password}}
+                </div>
+                <button type="submit" class="btn btn-danger block full-width m-b">Iniciar Sesión</button>
+
+
+            </form>
+            <p class="m-t"> <small>GEDI | Universidad del Valle &copy; 2015</small> </p>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="{% static 'js/jquery-2.1.1.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+</body>
+
+</html>

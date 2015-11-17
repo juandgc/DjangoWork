@@ -1,0 +1,595 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GEDI</title>
+    <link rel="shortcut icon" href="{% static 'img/iconoUnivalle.ico' %}">
+    <link href="{% static 'css/estilos_personalizados.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'font-awesome/css/font-awesome.css' %}" rel="stylesheet">
+    {% block css %}
+    {% endblock %}
+    <link href="{% static 'css/animate.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element"> 
+                            <span >
+                                {% if  user.is_authenticated%}
+                                    {% ifequal profile.foto None %}
+                                        <img  class="" height="95" width="70" src="{% static 'img/logo-nav.png' %}" alt="Logo Univalle">
+                                    {%else%}
+                                        <img style="width:100px; height:100px" class="img-circle circle-border m-b-md" src="{{ MEDIA_URL }}{{ profile.foto.url}}" alt="image">
+                                    {% endifequal %}
+                                {% else %}
+                                    <img  class="" height="95" width="70" src="{% static 'img/logo-nav.png' %}" alt="Logo Univalle">
+                                {% endif %}
+
+                            </span>
+                            {% if user.is_authenticated %}
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="clear">
+                                    <span class="block m-t-xs">
+                                        <strong class="font-bold">
+                                                {{user.username}}
+                                        </strong>
+                                    </span>
+                                    <span class="text-muted text-xs block">Admin GEDI <b class="caret"></b></span>
+                                </span> </a>
+                                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                    <li><a href="/subir-foto/">Actualizar foto</a></li>
+                                    <li><a href="/logout/">Cerrar sesión</a></li>
+                                </ul>
+                            {% else %}
+                                <span class="clear">
+                                    <span class="block m-t-xs">
+                                            <strong class="font-bold" style="color:white;">
+                                                    GEDI Univalle
+                                            </strong>
+                                    </span>
+                                </span>
+                            {% endif %}
+                    </div>
+                    <div class="logo-element">
+                        GEDI
+                    </div>
+                </li>
+
+                {% if user.is_authenticated %}
+                    <li {% block inicio %} {% endblock %}>
+                        <a href="/"><i class="fa fa-home"></i> <span class="nav-label">INICIO</span></a>
+                    </li>
+
+                    <li {% block integrante %} {% endblock %}>
+                        <a><i class="fa fa-users"></i> <span class="nav-label">INTEGRANTES</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                                <li {% block integrante_uno%} {% endblock %}><a href="/integrante/crear/">Crear</a></li>
+                                <li {% block integrante_dos%} {% endblock %}><a href="/integrante/listar/">Listar</a></li>
+                        </ul>
+                    </li>
+                    <li {% block articulo %} {% endblock %}>
+                        <a><i class="fa fa-font"></i> <span class="nav-label">ARTÍCULOS</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                                <li {% block articulo_uno %}{% endblock %}><a href="/articulo/crear/">Crear</a></li>
+                                <li {% block articulo_dos %}{% endblock %}><a href="/articulo/listar/">Listar</a></li>
+                        </ul>
+                    </li>
+                    <li {% block softwares %}{% endblock %}>
+                        <a><i class="fa fa-desktop"></i> <span class="nav-label">PRODUCTOS DE SOFTWARE</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                                <li {% block softwares_uno %}{% endblock %}><a href="/software/crear/">Crear</a></li>
+                                <li {% block softwares_dos %}{% endblock %}><a href="/software/listar/">Listar</a></li>
+                        </ul>
+                    </li>
+                    <li {% block tdirigidos %}{% endblock %}>
+                        <a><i class="fa fa-file-text"></i> <span class="nav-label">TRABAJOS DIRIGIDOS</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                                <li {% block tdirigidos_uno %}{% endblock %}><a href="/trabajo_dirigido/crear/">Crear</a></li>
+                                <li {% block tdirigidos_dos %}{% endblock %}><a href="/trabajo_dirigido/listar/">Listar</a></li>
+                        </ul>
+                    </li>
+                    <li {% block libro %}{% endblock %}>
+                        <a><i class="fa fa-file-text"></i> <span class="nav-label">LIBROS</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                                <li {% block libro_uno %}{% endblock %}><a href="/libro/crear/">Crear</a></li>
+                                <li {% block libro_dos %}{% endblock %}><a href="/libro/listar/">Listar</a></li>
+                        </ul>
+                    </li>
+                    <li {% block calibro %}{% endblock %}>
+                        <a><i class="fa fa-book"></i> <span class="nav-label">CAPITULOS DE LIBROS</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                                <li {% block caplibro_uno %}{% endblock %}><a href="/capitulo_libro/crear/">Crear</a></li>
+                                <li {% block caplibro_dos %}{% endblock %}><a href="/capitulo_libro/listar/">Listar</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li {% block inicio_nolg %} {% endblock %}>
+                        <a href="/"><i class="fa fa-home"></i> <span class="nav-label">INICIO</span></a>
+                    </li>
+                    <li {% block integrante_nolg %} {% endblock %}>
+                        <a href="/integrante/listar/"><i class="fa fa-users"></i> <span class="nav-label">INTEGRANTES</span></a>
+                    </li>
+                    <li {% block articulo_nolg %} {% endblock %}>
+                        <a href="/articulo/listar"><i class="fa fa-font"></i> <span class="nav-label">ARTÍCULOS</span></a>
+                    </li>
+                    <li {% block softwares_nolg %}{% endblock %}>
+                        <a href="/software/listar"><i class="fa fa-desktop"></i> <span class="nav-label">PRODUCTOS DE SOFTWARE</span></a>
+                    </li>
+                    <li {% block tdirigidos_nolg %}{% endblock %}>
+                        <a href="/trabajo_dirigido/listar"><i class="fa fa-file-text"></i> <span class="nav-label">TRABAJOS DIRIGIDOS</span> </a>
+                    </li>
+                    <li {% block libro_nolg %}{% endblock %}>
+                        <a href="/libro/listar"><i class="fa fa-file-text"></i> <span class="nav-label">LIBROS</span> </a>
+                    </li>
+                    <li {% block caplibro_nolg %}{% endblock %}>
+                        <a href="/capitulo_libro/listar"><i class="fa fa-book"></i> <span class="nav-label">CAPITULOS LIBROS</span> </a>
+                    </li>
+                {%endif%}
+
+            </ul>
+
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-danger " href="#"><i class="fa fa-bars"></i> </a>
+                </div>
+                <span class="titulo_pagina">
+                    <b>GEDI: Grupo de Estudios Doctorales en Informática</b>
+                </span>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        {% if user.is_authenticated %}
+                        <a href="/logout/">
+                            <i class="fa fa-sign-out"></i> Cerrar Sesión
+                        </a>
+                        {% else %}
+                        <a href="/login/">
+                            <i class="fa fa-sign-in"></i> Iniciar Sesión
+                        </a>
+                        {%endif%}
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+    {%block titulo %}    
+    {%endblock%}
+<div class="wrapper wrapper-content animated fadeInRight">
+{% block content %}
+<div class="row">
+            <div class="col-lg-3">
+                <div class="widget style1 navy-bg" style="background-color:#ED5565" data-animation="slideInRight">
+                    <div class="row">
+                        
+                        <div class="col-xs-8 text-right">
+                            <span></span>
+                            <h3 class="font-bold">Grupo Categoria A Colciencias</h3>
+                        </div>
+                        <div class="col-xs-4">
+                            <i class="fa fa-font fa-5x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="widget style1 navy-bg" style="background-color:#C00004" >
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-group fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> Numero de Integrantes </span>
+                            <h2 class="font-bold">{{num_integ}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3" >
+                <div class="widget style1 lazur-bg" style="background-color:#700C11">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-building fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> Articulos Publicados </span>
+                            <h2 class="font-bold">{{num_art}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="widget style1 yellow-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-database fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> Productos de Software </span>
+                            <h2 class="font-bold">{{num_soft}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>
+<br/>
+<div class="row">
+    <div class="carousel slide" id="carousel2">
+        <div class="carousel-inner">
+            <div class="item active">
+                <div class="col-md-6 col-md-offset-3">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Lineas de Investigación
+                            </div>
+                                <table class="table table-striped">
+                                    <tbody>
+                                    <tr>
+                                        
+                                        <td><span class="line"><i class="fa fa-cloud-upload fa-2x"></i></span></td>
+                                        <td>Desarrollo de Software y tecnologías Web</td>
+                                    </tr>
+                                    <tr>
+                                        
+                                        <td><span class="line"><i class="fa fa-cubes fa-2x"></span></td>
+                                        <td>Mineria de datos</td>
+                                    </tr>
+                                    <tr>
+                                        
+                                        <td><span class="line"><i class="fa fa-eye fa-2x"></span></td>
+                                        <td>Multimedia y Visión</td>
+                                    </tr>
+                                    <tr>
+                                        
+                                        <td><span class="line"><i class="fa fa-cog fa-2x"></span></td>
+                                        <td>Tecnologías Computacionales Avanzadas</td>
+                                    </tr>
+                                    <tr>
+                                        
+                                        <td><span class="line"><i class="fa fa-wifi fa-2x"></span></td>
+                                        <td>Tecnologías de la Información y las Comunicaciones</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+            </div>
+            <div class="item ">
+                <div class="col-md-6 col-md-offset-3">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                Sectores de Aplicación
+                            </div>
+                                <table class="table table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <td><span class="line"><i class="fa fa-codepen fa-2x"></i></span></td>
+                                        <td>Actividades de base de datos</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="line"><i class="fa fa-file-code-o fa-2x"></span></td>
+                                        <td>Desarrollo de programas (software)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="line"><i class="fa fa-code fa-2x"></span></td>
+                                        <td>Otras actividades de prestación de servicios en informática</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+            </div>
+            <div class="item">
+                <div class="col-md-6 col-md-offset-3">
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                ¿Que es GEDI?
+                            </div>
+                            <div class="panel-body">
+                                <p align = "justify">Gedi es un grupo de investigación de la Universidad del Valle, que tiene como propósitos:<br/><br/>
+                                    <i class="fa fa-arrow-circle-o-right fa-1x" ></i>  Estimular la formulación y desarrollo de propuestas de investigación que  integren  las distintas tecnologías computacionales que son objeto de trabajo del grupo.<br/><br/>
+                                    <i class="fa fa-arrow-circle-o-right fa-1x" ></i>  Aplicar resultados de la investigaci ón que se desarrolla en la solución de problemas nacionales e internacionales.<br/><br/>
+                                    <i class="fa fa-arrow-circle-o-right fa-1x" ></i>  Contribuir a la consolidación de una comunidad científica de computación publicando resultados de sus investigaciones.<br/><br/>
+                                    <i class="fa fa-arrow-circle-o-right fa-1x" ></i>  Apoyar estudiantes en sus proyectos de investigación y desarrollo.</p>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="item">
+                    <div class="row" style="overflow-x: auto;">
+                        <div class="col-gl-12">
+                            <div id="chart_div" style="padding-left: 20%"></div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <a data-slide="prev" href="#carousel2" class="left carousel-control">
+            <span class="icon-prev"></span>
+        </a>
+        <a data-slide="next" href="#carousel2" class="right carousel-control">
+            <span class="icon-next"></span>
+        </a>
+    </div>
+<br/>
+<br/>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Ultimos Productos de Software</h5>
+            </div>
+        <div class="ibox-content inspinia-timeline">
+            <div class="timeline-item">
+                <div class="row">
+                    <div class="col-xs-3 date">
+                                        <i class="fa fa-check-square-o"></i>
+                                        {{last_sf.year}}
+                                        <br/>
+                                        <small class="text-navy">{{last_sf.institucion_financiadora}}</small>
+                                    </div>
+                                    <div class="col-xs-7 content no-top-border">
+                                        <p class="m-b-xs"><strong>{{last_sf.nombre}}</strong></p>
+
+                                        <p>{{last_sf.descripcion}}</p>
+                                        <br/>
+                                        <strong>Web:</strong>
+                                        <p>{{last_sf.web}}</p>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="row">
+                                    <div class="col-xs-3 date">
+                                        <i class="fa fa-check-square-o"></i>
+                                        {{next_sf.year}}
+                                        <br/>
+                                        <small class="text-navy">{{next_sf.institucion_financiadora}}</small>
+                                    </div>
+                                    <div class="col-xs-7 content">
+                                        <p class="m-b-xs"><strong>{{next_sf.nombre}}</strong></p>
+                                        <p>{{next_sf.descripcion}}</p>
+                                        <br/>
+                                        <strong>Web:</strong>
+                                        <p>{{next_sf.web}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="widget-head-color-box navy-bg p-lg text-center" style="background-color:#ED5565">
+            <div class="m-b-md">
+                <h2 class="font-bold no-margins">
+                    {{int_top}}
+                </h2>
+                <small>Top Intengrante</small>
+            </div>
+            <i class="fa fa-trophy fa-5x"></i>
+            <div>
+                <br />
+                <span>Articulos: {{art_top}} </span> |
+                <span>Productos de Software: {{soft_top}}</span> |
+                <span>Trabajos dirigidos: {{t_dir_top}}</span>
+            </div>
+        </div>
+    </div>
+
+
+    
+    
+</div>
+<br/>
+<br/>
+<div class="row">
+    <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Radar de GEDI</h5>
+
+                            <div ibox-tools></div>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="text-center">
+                                <canvas id="polarChart" height="140"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Ultimos trabajos de grado</h5>
+                <div ibox-tools></div>
+            </div>
+            <div class="ibox-content inspinia-timeline">
+                <div class="timeline-item">
+                    <div class="row">
+                        <div class="col-xs-3 date">
+                            <i class="fa fa-graduation-cap"></i>
+                            {{last_td.fecha_fin}}
+                            <br/>
+                            <small class="text-navy">{{last_td.tipo}}</small>
+                        </div>
+                        <div class="col-xs-7 content no-top-border">
+                            <p class="m-b-xs"><h4><strong>{{last_td.nombre}}</strong></h4></p>
+                            <p><strong>Director: </strong>{{last_td.director}}</p>
+                            <p><strong>Estudiante: </strong>{{last_td.nombre_estudiante}}</p>
+                            <p><strong>Programa: </strong>{{last_td.programa_academico}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="row">
+                        <div class="col-xs-3 date">
+                            <i class="fa fa-graduation-cap"></i>
+                            {{next_td.fecha_fin}}
+                            <br/>
+                            <small class="text-navy">{{next_td.tipo}}</small>
+                        </div>
+                        <div class="col-xs-7 content">
+                            <p class="m-b-xs"><h4><strong>{{next_td.nombre}}</strong></h4></p>
+                            <p><strong>Director: </strong>{{next_td.director}}</p>
+                            <p><strong>Estudiante: </strong>{{next_td.nombre_estudiante}}</p>
+                            <p><strong>Programa: </strong>{{next_td.programa_academico}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
+</div>
+
+        
+            <div class="row" style="background-color:#FFF;">
+                <br/>
+                <div class="col-lg-12">
+                    <div class="col-lg-3">
+                        <span class="logo-footer"><img width="112" height="159" class="logo-img" src="{% static 'img/logo-footer.png' %}"></span>
+                        <p style="color:#C00004"><strong>Copyright</strong> GEDI &copy; 2014-2015</p>
+                    </div>
+                    <div class="col-lg-3">
+                        <p style="color:#C00004"><b>UNIVERSIDAD DEL VALLE</b> <br/> <b>Facultad de Ingeniería</b> <br/> <b>Escuela de Ingeniería de Sistemas y Ciencias de la Computacíon</b> <br/>Cali-Colombia</p>
+                    </div>
+                    <div class="col-lg-3">
+                        <p style="color:#C00004"><b>Direccion:</b> <br/> Ciudad Universitaria Meléndez <br/> Calle 13 # 100-00</p>
+                    </div>
+                    <div class="col-lg-3">
+                        <p style="color:#C00004"><b>Telefonos:</b> <br/> +57 (2) 3212100 ext 2869 <br/> Edificio 331 Segundo Piso</p>
+                    </div>
+                </div>
+            </div>
+        
+
+    </div>
+</div>
+
+<!-- Mainly scripts -->
+
+<script src="{% static 'js/jquery-2.1.1.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/plugins/metisMenu/jquery.metisMenu.js' %}"></script>
+<script src="{% static 'js/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'js/plugins/jeditable/jquery.jeditable.js' %}"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="{% static 'js/inspinia.js' %}"></script>
+<script src="{% static 'js/plugins/pace/pace.min.js' %}"></script>
+
+{% block js %}
+    <!-- ChartJS-->
+    <script src="{% static 'js/plugins/chartJs/Chart.min.js' %}"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['motionchart']}]}"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["motionchart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+          {% for col in columnas %}
+              j_col = $.parseJSON('{{col|safe}}');
+              data.addColumn(j_col['tipo_dato'],j_col['valor']);
+          {%endfor%}
+          var json_array = [];
+          {% for j in datos_json %}
+              json_array.push($.parseJSON('{{j|safe}}'));
+          {% endfor %}
+        var rows_data = [];
+        for (var i = 0 ; i<json_array.length;i++){
+            var array = [json_array[i]['nombre'],new Date (json_array[i]['fecha']),json_array[i]['valor_uno'],json_array[i]['valor_dos'],json_array[i]['posicion']];
+            rows_data.push(array);
+        }
+        data.addRows(
+          rows_data
+        );
+        var chart = new google.visualization.MotionChart(document.getElementById('chart_div'));
+
+        chart.draw(data, {width: 600, height:300});
+      }
+    </script>
+
+  <script>
+    $(document).ready(function(){
+
+        var polarData = [
+        {
+            value: {{num_integ}},
+            color: "#a3e1d4",
+            highlight: "#1ab394",
+            label: "Integrantes"
+        },
+        {
+            value: {{num_soft}},
+            color: "#dedede",
+            highlight: "#1ab394",
+            label: "Productos de Software"
+        },
+        {
+            value: {{num_art}},
+            color: "#b5b8cf",
+            highlight: "#1ab394",
+            label: "Artículos"
+        },
+        {
+            value: {{num_trab_dir}},
+            color: "#ED5565",
+            highlight: "#1ab394",
+            label: "Trabajos Dirigidos"
+        }
+        ];
+
+        var polarOptions = {
+            scaleShowLabelBackdrop: true,
+            scaleBackdropColor: "rgba(255,255,255,0.75)",
+            scaleBeginAtZero: true,
+            scaleBackdropPaddingY: 1,
+            scaleBackdropPaddingX: 1,
+            scaleShowLine: true,
+            segmentShowStroke: true,
+            segmentStrokeColor: "#fff",
+            segmentStrokeWidth: 2,
+            animationSteps: 100,
+            animationEasing: "easeOutBounce",
+            animateRotate: true,
+            animateScale: false,
+            responsive: true,
+
+        };
+
+        var ctx = document.getElementById("polarChart").getContext("2d");
+        var myNewChart = new Chart(ctx).PolarArea(polarData, polarOptions);
+
+    });
+
+
+  </script>
+
+{% endblock %}
+
+
+
+</body>
+
+</html>

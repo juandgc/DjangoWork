@@ -1,0 +1,83 @@
+{% extends "index.html" %}
+
+{% load staticfiles %}
+
+{% block css %}
+    {{block.super}}
+    <link href="{% static 'css/plugins/dropzone/basic.css' %}" rel="stylesheet">
+    <link href="{% static 'css/plugins/dropzone/dropzone.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block titulo %}
+<div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>Foto de usuario</h2>
+
+            </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Zona para realizar la carga de la fotografía</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <form id="my-awesome-dropzone" method="post" class="dropzone" action="#" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="dropzone-previews"></div>
+                <button type="submit" class="btn btn-primary pull-right">Subir foto!</button>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block js %}
+    <!-- DROPZONE -->
+    <script src="{% static 'js/plugins/dropzone/dropzone.js' %}"></script>
+
+
+    <script>
+        $(document).ready(function(){
+
+            Dropzone.options.myAwesomeDropzone = {
+
+                paramName:'foto',
+                autoProcessQueue: false,
+                uploadMultiple: false,
+                parallelUploads: 1,
+                maxFiles: 1,
+
+                // Dropzone settings
+                init: function() {
+                    var myDropzone = this;
+
+                    this.element.querySelector("button[type=submit]").addEventListener("click", function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        myDropzone.processQueue();
+                    });
+                    this.on("sendingmultiple", function() {
+                    });
+                    this.on("successmultiple", function(files, response) {
+                    });
+                    this.on("errormultiple", function(files, response) {
+                    });
+                }
+
+            }
+
+       });
+    </script>
+
+{% endblock%}
