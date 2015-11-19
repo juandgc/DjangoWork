@@ -65,7 +65,7 @@ WSGI_APPLICATION = 'gedi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'gedidb',
+        'NAME': 'prueba',
         'USER': 'gediuser',
         'PASSWORD': 'gedi',
         'HOST': '127.0.0.1',

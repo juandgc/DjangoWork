@@ -116,6 +116,13 @@
                                 <li {% block caplibro_dos %}{% endblock %}><a href="/capitulo_libro/listar/">Listar</a></li>
                         </ul>
                     </li>
+                    <li {% block noticia %}{% endblock %}>
+                        <a><i class="fa fa-book"></i> <span class="nav-label">NOTICIAS</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                                <li {% block noticia_uno %}{% endblock %}><a href="/noticia/crear/">Crear</a></li>
+                                <li {% block noticia_dos %}{% endblock %}><a href="/noticia/listar/">Listar</a></li>
+                        </ul>
+                    </li>
                 {% else %}
                     <li {% block inicio_nolg %} {% endblock %}>
                         <a href="/"><i class="fa fa-home"></i> <span class="nav-label">INICIO</span></a>
@@ -137,6 +144,9 @@
                     </li>
                     <li {% block caplibro_nolg %}{% endblock %}>
                         <a href="/capitulo_libro/listar"><i class="fa fa-book"></i> <span class="nav-label">CAPITULOS LIBROS</span> </a>
+                    </li>
+                    <li {% block noticia_nolg %}{% endblock %}>
+                        <a href="/noticia/listar"><i class="fa fa-book"></i> <span class="nav-label">NOTICIAS</span> </a>
                     </li>
                 {%endif%}
 
@@ -333,22 +343,11 @@
     <div class="col-lg-6">
         <div class="carousel slide" id="carouselnews">
             <div class="carousel-inner">
-                <div class="item active">
-                    <img src="{{ MEDIA_URL }}/fotos_usuarios/DC.jpg" class="img_responsive">
-                </div>
-                <div class="item ">
-                    <img src="{{MEDIA_URL}}/fotos_usuarios/DC.jpg" class="img_responsive">
-                </div>
-                <div class="item">
-                    <img src="{{MEDIA_URL}}/fotos_usuarios/DC.jpg" class="img_responsive">
-                </div>
-                <div class="item">
-                        <div class="row" style="overflow-x: auto;">
-                            <div class="col-gl-12">
-                                <div id="chart_div" style="padding-left: 20%"></div>
-                            </div>
-                        </div>
-                </div>
+                {% for new in noticias%}
+                    <div class="item active">
+                        <img src="{{ new.pic.url }}" class="img_responsive">
+                    </div>
+                {% endfor %}
             </div>
             <a data-slide="prev" href="#carouselnews" class="left carousel-control">
                 <span class="icon-prev"></span>
@@ -560,7 +559,7 @@
 
   <script>
     $(document).ready(function(){
-
+        $('#carouselnews item:nth-chil(1)').addClass("active");
         var polarData = [
         {
             value: {{num_integ}},

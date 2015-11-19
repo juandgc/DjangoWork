@@ -148,3 +148,36 @@ class CapituloLibroForm(forms.ModelForm):
             'mes_presentacion': forms.Select(attrs={'class': 'form-control chosen-select'}),
 
         }
+
+
+class PicForm(forms.ModelForm):
+    class Meta:
+        model = Noticias
+        fields = '__all__' 
+
+class CropForm(forms.Form):
+    """Django form for accepting the information passed after cropping a loaded 
+    image
+    """
+    imgUrl = forms.CharField() # your image path (the one we received after successful upload)
+    imgInitW = forms.DecimalField()          # your image original width (the one we received after upload)
+    imgInitH = forms.DecimalField()          # your image original height (the one we received after upload)
+    imgW = forms.DecimalField()              # your new scaled image width
+    imgH = forms.DecimalField()              # your new scaled image height
+    imgX1 = forms.DecimalField()             # top left corner of the cropped image in relation to scaled image
+    imgY1 = forms.DecimalField()             # top left corner of the cropped image in relation to scaled image
+    cropW = forms.DecimalField()             # cropped image width
+    cropH = forms.DecimalField()             # cropped image height
+
+class NoticiaForm(ModelForm):
+
+    class Meta:
+        model = Noticias
+        fields = [ 'titulo_noticia','descripcion','fecha_inicio','fecha_fin']
+
+        widgets = {
+            'titulo_noticia': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Título...'}),
+            'descripcion': forms.TextInput(attrs={'class': 'form-control '}), #Para probar si funciona mientras se implementa el choices de pais desde el html
+            'fecha_inicio': forms.DateInput(attrs={'class': 'form-control'}),
+            'fecha_fin': forms.DateInput(attrs={'class': 'form-control'})
+        }

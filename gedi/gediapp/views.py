@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 from django.shortcuts import render
-from gediapp.forms import IntegranteForm, SoftwareForm, TrabajoDirigidoForm, ArticuloForm, LoginForm, UserForm, LibroForm, CapituloLibroForm
+from gediapp.forms import IntegranteForm, SoftwareForm, TrabajoDirigidoForm, ArticuloForm, LoginForm, UserForm, LibroForm, CapituloLibroForm , NoticiaForm, PicForm, CropForm
 from django.http import HttpResponse, HttpResponseRedirect  # For tests
-from gediapp.models import Integrante, Softwares, Articulo, TrabajosDirigidos, UserProfile, Libro, CapitulosLibros
+from gediapp.models import Integrante, Softwares, Articulo, TrabajosDirigidos, UserProfile, Libro, CapitulosLibros, Noticias
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -11,6 +11,14 @@ from django.conf import settings
 from .dashboards import Dashboard
 import json,datetime
 
+
+from django.core.files.storage import default_storage
+
+from PIL import Image
+from io import BytesIO
+import base64
+import re
+import sys
 
 
 # Create your views here.
@@ -31,6 +39,7 @@ def inicio(request):
     trab_list = reportes.trabajos_dir_list() #Trabajos
     last_td,next_td = trab_list[0],trab_list[1]
     total_trabajos_dir = reportes.trabajos_dir_total()
+    noticias = Noticias.objects.all()
     ##Jsons
     datos_json = []
     for i in range(1,3):
@@ -74,6 +83,7 @@ def inicio(request):
     #
     return render(request, 'index.html',
                   {'profile':profile,
+                   'noticias':noticias,
                    'num_integ':integrantres,
                    'num_art':artculos,
                    'num_soft':productos_sf,
@@ -569,3 +579,72 @@ def activacion_libro(request, id_libro):
         lib.activo = True
     lib.save()
     return HttpResponseRedirect("/libro/listar/")
+
+
+
+
+def crear_noticia(request):
+    global profile
+    if request.method == 'POST':
+        form = NoticiaForm(request.POST)
+        if form.is_valid():
+            noticia= form.save(commit=False)
+            noticia.titulo_noticia=libro.titulo_noticia.upper()
+            form.save()
+            return render(request, 'crear_noticia.html', {'form': NoticiaForm(), 'exito': True,'profile':profile})
+    else:
+        form = NoticiaForm()
+    return render(request, 'crear_noticia.html', {'form': form, 'exito': False,'profile':profile})
+
+def crop_pic(request):
+
+    response_data = {"status":"error", 'message':'Only Post Accepted'}
+    if request.method == 'POST':
+
+        
+        form = CropForm(request.POST)
+        if form.is_valid():
+            # get the url of the working image i.e. www.example.com/media/pictures/uploaded_image.png
+            image_url = form.cleaned_data['imgUrl'] 
+
+            # get the root url for media files i.e. www.example.com/media/      
+            media_url = default_storage.base_url 
+
+            # strip the root url off the image url to get it's path i.e. pictures/uploaded_image.png 
+            # The purpose of splitting the url at '?' is in the case a querystring is attached to the URL
+            image_path = image_url
+
+            #pic = Picture.objects.get(image=image_path)
+            image_path = re.sub('^data:image/.+;base64,', '', image_url)
+            
+            original = Image.open(BytesIO(base64.b64decode(image_path)))
+            newim = original.resize(
+                        (int(form.cleaned_data['imgW']), int(form.cleaned_data['imgH'])), 
+                        Image.ANTIALIAS
+                        )
+
+            x1 = int(form.cleaned_data['imgX1']) 
+            y1 = int(form.cleaned_data['imgY1']) 
+            x2 = int(form.cleaned_data['cropW']) + x1
+            y2 = int(form.cleaned_data['cropH']) + y1
+
+            newim = newim.crop((x1,y1,x2,y2))
+            
+            
+            newim.save("media/"+datetime.datetime.today().strftime("%Y-%m-%d")+".png","PNG")
+            
+
+            #old_image.close()
+            
+            response_data = {
+                "status":"success",
+                "url":media_url+datetime.datetime.today().strftime("%Y-%m-%d")+".png",
+                }
+        else:
+            response_data = {"status":"error", 'message':form.errors}
+
+    # Croppic will parse the information returned into json. content_type needs 
+    # to be set as 'text/plain'
+    return HttpResponse(json.dumps(response_data), 
+                        content_type="text/plain")
+

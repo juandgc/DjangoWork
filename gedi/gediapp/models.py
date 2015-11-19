@@ -268,3 +268,13 @@ class Libro(models.Model):
 
     def __str__(self):
         return self.titulo_libro
+
+class Noticias(models.Model):
+    titulo_noticia = models.TextField()
+    descripcion = models.TextField()
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField()
+    pic = models.ImageField(upload_to="news/")
+
+    def __str__(self):
+        return self.titulo_noticia
