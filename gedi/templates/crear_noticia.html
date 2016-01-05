@@ -25,6 +25,11 @@
           height: 400px;
           background-color:#888;
           position:relative; /* or fixed or absolute */
+          margin-bottom: 10px;
+        }
+        .cropControlsUpload{
+            left: 0 !important;
+            right: inherit;
         }
         #cropContainerHeader{
 
@@ -74,7 +79,7 @@ class="active"
                                 </div>
                             {% endif %}
 
-                            <form class="form-horizontal" method="post" action="">
+                            <form class="form-horizontal" method="post" id="formnoticias" action="">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <div id='cropContainerHeader'>
@@ -106,6 +111,8 @@ class="active"
                                     <label class="col-lg-2 control-label">{{form.fecha_fin.label}}</label>
                                     <div class="col-lg-6">{{form.fecha_fin}}</div>
                                 </div>
+
+                                <input type="text" name="imgval" hidden value="" id="inpImg">
 
                                 <div class="form-group">
                                     <div class="col-lg-offset-2 col-lg-14">
@@ -174,7 +181,12 @@ class="active"
                   cropData:{
                     "csrfmiddlewaretoken":"{{ csrf_token }}",
                   },
-                  onAfterImgCrop: function(mns){console.log(mns)},
+                  onAfterImgCrop: function(mns){
+                    console.log(mns);
+                    var img = mns["url"];
+                    $("#inpImg").val(img);
+                    $("#formnoticias").submit();
+                  },
                   onError: function(errormsg){console.log(errormsg);}
                 }
                 var cropperHeader = new Croppic('image-upload', cropperOptions);

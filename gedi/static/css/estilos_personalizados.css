@@ -28,3 +28,10 @@
 .dspnone{
     display: none;
 }
+
+#carouselnews .item{
+    text-align: center;
+}
+#carouselnews  .item img{
+    display: inline-block;
+}

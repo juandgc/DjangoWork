@@ -587,9 +587,14 @@ def crear_noticia(request):
     global profile
     if request.method == 'POST':
         form = NoticiaForm(request.POST)
+        print("aqui post")
         if form.is_valid():
+            print("aqui valid")
             noticia= form.save(commit=False)
-            noticia.titulo_noticia=libro.titulo_noticia.upper()
+            noticia.titulo_noticia=noticia.titulo_noticia.upper()
+
+            print(request.POST["imgval"])
+            noticia.pic = request.POST["imgval"]
             form.save()
             return render(request, 'crear_noticia.html', {'form': NoticiaForm(), 'exito': True,'profile':profile})
     else:
@@ -631,14 +636,14 @@ def crop_pic(request):
             newim = newim.crop((x1,y1,x2,y2))
             
             
-            newim.save("media/"+datetime.datetime.today().strftime("%Y-%m-%d")+".png","PNG")
+            newim.save("media/"+datetime.datetime.today().strftime("%Y-%m-%d-%H-%M-%S")+".png","PNG")
             
 
             #old_image.close()
             
             response_data = {
                 "status":"success",
-                "url":media_url+datetime.datetime.today().strftime("%Y-%m-%d")+".png",
+                "url":media_url+datetime.datetime.today().strftime("%Y-%m-%d-%H-%M-%S")+".png",
                 }
         else:
             response_data = {"status":"error", 'message':form.errors}
