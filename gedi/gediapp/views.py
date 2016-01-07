@@ -39,7 +39,10 @@ def inicio(request):
     trab_list = reportes.trabajos_dir_list() #Trabajos
     last_td,next_td = trab_list[0],trab_list[1]
     total_trabajos_dir = reportes.trabajos_dir_total()
-    noticias = Noticias.objects.all()
+
+    hoy = datetime.datetime.today().strftime("%Y-%m-%d")
+    print(hoy)
+    noticias = Noticias.objects.filter(fecha_inicio__lte=hoy,fecha_fin__gte=hoy)
     ##Jsons
     datos_json = []
     for i in range(1,3):
@@ -587,13 +590,10 @@ def crear_noticia(request):
     global profile
     if request.method == 'POST':
         form = NoticiaForm(request.POST)
-        print("aqui post")
         if form.is_valid():
-            print("aqui valid")
             noticia= form.save(commit=False)
             noticia.titulo_noticia=noticia.titulo_noticia.upper()
 
-            print(request.POST["imgval"])
             noticia.pic = request.POST["imgval"]
             form.save()
             return render(request, 'crear_noticia.html', {'form': NoticiaForm(), 'exito': True,'profile':profile})

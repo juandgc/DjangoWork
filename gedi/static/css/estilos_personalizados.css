@@ -35,3 +35,13 @@
 #carouselnews  .item img{
     display: inline-block;
 }
+
+#carouselnews .carousel-caption{
+    right: 0;
+    left: 0;
+    bottom: 0px;
+    padding-bottom: 0;
+    overflow: hidden;
+    overflow-y: auto;
+    background-color: rgba(0,0,0,0.5);
+}
