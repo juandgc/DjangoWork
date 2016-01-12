@@ -615,9 +615,6 @@ def crop_pic(request):
             # get the root url for media files i.e. www.example.com/media/      
             media_url = default_storage.base_url 
 
-            # strip the root url off the image url to get it's path i.e. pictures/uploaded_image.png 
-            # The purpose of splitting the url at '?' is in the case a querystring is attached to the URL
-            image_path = image_url
 
             #pic = Picture.objects.get(image=image_path)
             image_path = re.sub('^data:image/.+;base64,', '', image_url)

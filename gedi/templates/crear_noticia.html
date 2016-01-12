@@ -7,6 +7,7 @@
     <link href="{% static 'css/plugins/datapicker/datepicker3.css' %}" rel="stylesheet">
     <link href="{% static 'css/plugins/chosen/chosen.css' %}" rel="stylesheet">
     <link href="{% static 'css/croppic.css' %}" rel="stylesheet">
+
     <style type="text/css">
         ul.errorlist {
             margin: 0;
@@ -26,6 +27,10 @@
           background-color:#888;
           position:relative; /* or fixed or absolute */
           margin-bottom: 10px;
+        }
+        .cropControlCrop{
+            position: absolute;
+            visibility: hidden;
         }
         .cropControlsUpload{
             left: 0 !important;
@@ -99,17 +104,29 @@ class="active"
                                 </div>
 
 
-                                <div class="form-group">
+                                <div class="form-group"  id="data_1">
                                     {{form.fecha_inicio.errors}}
                                     <label class="col-lg-2 control-label">{{form.fecha_inicio.label}}</label>
-                                    <div class="col-lg-6">{{form.fecha_inicio}}</div>
+                                    <div  class="col-lg-6">
+                                        <div class="input-group date">
+                                            <span class="input-group-addon "><i class="fa fa-calendar"></i>
+                                                    </span>
+                                            {{form.fecha_inicio}}
+                                        </div>
+                                    </div>
                                 </div>
 
 
-                                <div class="form-group">
+                                <div class="form-group" id="data_3" >
                                     {{form.fecha_fin.errors}}
                                     <label class="col-lg-2 control-label">{{form.fecha_fin.label}}</label>
-                                    <div class="col-lg-6">{{form.fecha_fin}}</div>
+                                    <div  class="col-lg-6">
+                                        <div class="input-group date">
+                                            <span class="input-group-addon "><i class="fa fa-calendar"></i>
+                                                    </span>
+                                            {{form.fecha_fin}}
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <input type="text" name="imgval" hidden value="" id="inpImg">
@@ -133,6 +150,10 @@ class="active"
    <script src="{% static 'js/plugins/datapicker/bootstrap-datepicker.js' %}"></script>
    <!-- Chosen -->
     <script src="{% static 'js/plugins/chosen/chosen.jquery.js' %}"></script>
+
+    <!--Bootstrap validator-->
+    <link rel="stylesheet" href="{% static 'bootstrap-validator/bootstrapValidator.min.css' %}">
+    <script src="{% static 'bootstrap-validator/bootstrapValidator.min.js' %}"></script>
    <script type="text/javascript">
             $('#data_1 .input-group.date').datepicker({
                 todayBtn: "linked",
@@ -143,19 +164,11 @@ class="active"
             });
 
             $('#data_3 .input-group.date').datepicker({
-                startView: 2,
                 todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
+                calendarWeeks: true,
                 autoclose: true
-            });
-
-            $('#data_4 .input-group.date').datepicker({
-                minViewMode: 1,
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-                todayHighlight: true
             });
 
             var config = {
@@ -181,6 +194,7 @@ class="active"
                   cropData:{
                     "csrfmiddlewaretoken":"{{ csrf_token }}",
                   },
+                  onBeforeImgCrop:function(){},
                   onAfterImgCrop: function(mns){
                     console.log(mns);
                     var img = mns["url"];
@@ -200,6 +214,46 @@ class="active"
                 }
                 $('.cropControlCrop').click();
             });
+            var faIcon = {
+                valid: 'fa fa-check-circle fa-lg text-success',
+                invalid: 'fa fa-times-circle fa-lg',
+                validating: 'fa fa-refresh'
+            };
+
+            // $('#formnoticias').bootstrapValidator({
+            //     feedbackIcons: faIcon,
+            //     fields: {
+            //         titulo_noticia: {
+            //             validators: {
+            //                 notEmpty: {
+            //                     message: 'El titulo de la noticia no puede ser vacío'
+            //                 }
+            //             }
+            //         },
+            //         descripcion: {
+            //             validators: {
+            //                 notEmpty: {
+            //                     message: 'la descripcion de la noticia no puede ser vacío'
+            //                 }
+            //             }
+            //         },
+            //         fecha_inicio: {
+            //             validators: {
+            //                 notEmpty: {
+            //                     message: 'La fecha_inicio no puede ser vacío'
+            //                 }
+            //             }
+            //         },
+            //         fecha_fin: {
+            //             validators: {
+            //                 notEmpty: {
+            //                     message: 'La fecha_fin no puede ser vacío'
+            //                 }
+            //             }
+            //         }
+            //     }
+            // });
+
 
    </script>
 {% endblock %}
