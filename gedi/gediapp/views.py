@@ -10,7 +10,7 @@ import os
 from django.conf import settings
 from .dashboards import Dashboard
 import json,datetime
-
+from django.http import JsonResponse
 
 from django.core.files.storage import default_storage
 
@@ -41,8 +41,24 @@ def inicio(request):
     total_trabajos_dir = reportes.trabajos_dir_total()
 
     hoy = datetime.datetime.today().strftime("%Y-%m-%d")
-    print(hoy)
+
     noticias = Noticias.objects.filter(fecha_inicio__lte=hoy,fecha_fin__gte=hoy)
+
+    json_news = []
+
+    for index,new in enumerate(noticias):
+        json_new = json.dumps({
+            'titulo':new.titulo_noticia,
+            'valor': index+2,
+            'color' : '#548646'
+            }, separators=(',', ': '))
+
+        json_news.append(json_new)
+
+
+
+
+
     ##Jsons
     datos_json = []
     for i in range(1,3):
@@ -100,7 +116,8 @@ def inicio(request):
                    'next_td':next_td,
                    'num_trab_dir':total_trabajos_dir,
                    'datos_json':datos_json,
-                   'columnas': json_columnas
+                   'columnas': json_columnas,
+                   'json_news': json_news
                    })
 
 @login_required
@@ -556,7 +573,7 @@ def editar_libro(request, id_libro):
         form_edicion = LibroForm(request.POST, instance=libro_editar, initial=libro_editar.__dict__)
 
         if form_edicion.has_changed():
-            print(id_libro)
+
             if form_edicion.is_valid():
                 libro_nuevo = form_edicion.save(commit=False)
                 libro_nuevo.titulo_libro = libro_nuevo.titulo_libro.upper()
@@ -633,14 +650,14 @@ def crop_pic(request):
             newim = newim.crop((x1,y1,x2,y2))
             
             
-            newim.save("media/"+datetime.datetime.today().strftime("%Y-%m-%d-%H-%M-%S")+".png","PNG")
+            newim.save("media/noticias/"+datetime.datetime.today().strftime("%Y-%m-%d-%H-%M-%S")+".png","PNG")
             
 
             #old_image.close()
             
             response_data = {
                 "status":"success",
-                "url":media_url+datetime.datetime.today().strftime("%Y-%m-%d-%H-%M-%S")+".png",
+                "url":media_url+"noticias/"+datetime.datetime.today().strftime("%Y-%m-%d-%H-%M-%S")+".png",
                 }
         else:
             response_data = {"status":"error", 'message':form.errors}
@@ -650,3 +667,22 @@ def crop_pic(request):
     return HttpResponse(json.dumps(response_data), 
                         content_type="text/plain")
 
+def filterChar(request):
+    if request.method == 'GET':
+        noticias = Noticias.objects.filter(fecha_fin__month=1)
+        
+        final = {}
+        json_news = []
+
+        for index,new in enumerate(noticias):
+            json_new = {
+                'titulo':new.titulo_noticia,
+                'valor': index+2,
+                'color' : '#548646'
+                }
+
+            json_news.append(json_new)
+            print(json_new)
+        final["finals"] = json_news
+        print(final)
+        return JsonResponse(final)

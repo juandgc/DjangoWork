@@ -90,6 +90,7 @@ class="active"
                                     <div id='cropContainerHeader'>
                                         <div id='image-upload'></div>
                                     </div>
+                                </div>
 
                                 <div class="form-group">
                                     {{form.titulo_noticia.errors}}
@@ -220,39 +221,39 @@ class="active"
                 validating: 'fa fa-refresh'
             };
 
-            // $('#formnoticias').bootstrapValidator({
-            //     feedbackIcons: faIcon,
-            //     fields: {
-            //         titulo_noticia: {
-            //             validators: {
-            //                 notEmpty: {
-            //                     message: 'El titulo de la noticia no puede ser vacío'
-            //                 }
-            //             }
-            //         },
-            //         descripcion: {
-            //             validators: {
-            //                 notEmpty: {
-            //                     message: 'la descripcion de la noticia no puede ser vacío'
-            //                 }
-            //             }
-            //         },
-            //         fecha_inicio: {
-            //             validators: {
-            //                 notEmpty: {
-            //                     message: 'La fecha_inicio no puede ser vacío'
-            //                 }
-            //             }
-            //         },
-            //         fecha_fin: {
-            //             validators: {
-            //                 notEmpty: {
-            //                     message: 'La fecha_fin no puede ser vacío'
-            //                 }
-            //             }
-            //         }
-            //     }
-            // });
+            $('#formnoticias').bootstrapValidator({
+                feedbackIcons: faIcon,
+                fields: {
+                    titulo_noticia: {
+                        validators: {
+                            notEmpty: {
+                                message: 'El titulo de la noticia no puede ser vacío'
+                            }
+                        }
+                    },
+                    descripcion: {
+                        validators: {
+                            notEmpty: {
+                                message: 'la descripcion de la noticia no puede ser vacío'
+                            }
+                        }
+                    },
+                    fecha_inicio: {
+                        validators: {
+                            notEmpty: {
+                                message: 'La fecha_inicio no puede ser vacío'
+                            }
+                        }
+                    },
+                    fecha_fin: {
+                        validators: {
+                            notEmpty: {
+                                message: 'La fecha_fin no puede ser vacío'
+                            }
+                        }
+                    }
+                }
+            });
 
 
    </script>

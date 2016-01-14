@@ -177,7 +177,7 @@ class NoticiaForm(ModelForm):
 
         widgets = {
             'titulo_noticia': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Título...'}),
-            'descripcion': forms.TextInput(attrs={'class': 'form-control '}), #Para probar si funciona mientras se implementa el choices de pais desde el html
+            'descripcion': forms.Textarea(attrs={'class': 'form-control '}), #Para probar si funciona mientras se implementa el choices de pais desde el html
             'fecha_inicio': forms.DateInput(attrs={'class': 'form-control'}),
             'fecha_fin': forms.DateInput(attrs={'class': 'form-control'})
         }
