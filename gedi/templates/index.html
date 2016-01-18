@@ -184,7 +184,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
 {% block content %}
 
-<div class="row">
+<div class="row dspnone">
     <div id="chartdiv" class="col-lg-6" style="width: 100%; height: 400px;"></div>
     <div id="optionCharts">
         <input id="chartSerial" value="1" type="radio" class="active" name="charts">Columnas<br>
@@ -196,7 +196,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row dspnone">
     <table id="example" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
@@ -824,11 +824,8 @@
             });
             var validate = function(datas){
                 var chartType= $('#optionCharts input.active').val();
-
-                        console.log(datas);
                 switch(chartType){
                     case "1":
-                        console.log(chartType);
                         chart.dataProvider=datas;
                         chart.validateData();
                         chart.animateAgain();

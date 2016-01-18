@@ -682,7 +682,7 @@ def filterChar(request):
                 }
 
             json_news.append(json_new)
-            print(json_new)
+
         final["finals"] = json_news
-        print(final)
+
         return JsonResponse(final)

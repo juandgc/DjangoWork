@@ -150,9 +150,9 @@ class="active"
     <script>
 
 		function checkDates()  {
-			var fecha_in = document.getElementById("id_fecha_inicio_vin").value + "";
-			var fecha_fn = document.getElementById("id_fecha_fin_vin").value + "";
-            if (fecha_fn == ""){
+			var fecha_in = new Date(document.getElementById("id_fecha_inicio_vin").value + "");
+			var fecha_fn = new Date(document.getElementById("id_fecha_fin_vin").value + "");
+            if (fecha_fn == null){
                 return true;
             }else{
                 if (fecha_in > fecha_fn){
