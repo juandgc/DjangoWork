@@ -22,7 +22,7 @@
             padding: 4px 5px;
         }
         #image-upload {
-          width: 600px;
+          width: 540px;
           height: 400px;
           background-color:#888;
           position:relative; /* or fixed or absolute */
@@ -86,10 +86,12 @@ class="active"
 
                             <form class="form-horizontal" method="post" id="formnoticias" action="">
                                 {% csrf_token %}
+
                                 <div class="form-group">
-                                    <div id='cropContainerHeader'>
-                                        <div id='image-upload'></div>
+                                    <div class="col-lg-4">
+                                        <div id="modalTrigger2" class="btn btn-default" data-toggle="modal" data-target="#myModalCrear" >Cargar Imagen</div>
                                     </div>
+                                    <label class="col-lg-2 control-label" id="labelImg"></label>
                                 </div>
 
                                 <div class="form-group">
@@ -138,6 +140,27 @@ class="active"
                                     </div>
                                 </div>
                             </form>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="myModalCrear" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close " data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Imagen Noticia</h4>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <div id='cropContainerHeader'>
+                                                <div id='image-upload'></div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="UploadImg">Subir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -209,11 +232,21 @@ class="active"
 
             $('.mysub').click(function(e){
                 e.preventDefault();
-                if($('.cropControlUpload').is(':visible')){
+                if($('#modalTrigger2').hasClass('btn-default')){
                     alert("Debes cargar la imagen");
                     return;
                 }
                 $('.cropControlCrop').click();
+            });
+            $("#UploadImg").click(function(){
+                if($('.cropControlUpload').is(':visible')){
+                    
+                    $("#modalTrigger2").removeClass("btn-danger").addClass("btn-default").html("Cargar Imagen");
+                    $("#labelImg").html("");
+                }else{
+                    $("#modalTrigger2").removeClass("btn-default").addClass("btn-danger").html("Cambiar Imagen");
+                    $("#labelImg").html("Imagen lista para subir");
+                }
             });
             var faIcon = {
                 valid: 'fa fa-check-circle fa-lg text-success',

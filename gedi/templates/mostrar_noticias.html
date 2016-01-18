@@ -1,0 +1,270 @@
+{% extends "index.html" %}
+
+{% load staticfiles %}
+
+{% block css %}
+    {{block.super}}
+
+    <style type="text/css">
+            ul.errorlist {
+                margin: 0;
+                padding: 0;
+            }
+            .errorlist li {
+                background-color: red;
+                color: white;
+                display: block;
+                font-size: 10px;
+                margin: 0 0 3px;
+                padding: 4px 5px;
+            }
+    </style>
+{% endblock %}
+
+{% block noticia_nolg %}
+class="active"
+{%endblock%}
+{% block noticia%}
+class="active"
+{% endblock %}
+{% block noticia_dos %}
+class="active"
+{% endblock %}
+
+{% block titulo %}
+<div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>Listado de Noticias</h2>
+
+            </div>
+    </div>
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Lista de todas la noticias del GEDI</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                             </a>
+                        </div>
+                 </div>
+                 <div class="ibox-content" style="overflow-x:auto;">
+
+                    <table class="table table-striped table-bordered table-hover dataTables-example" >
+                        <thead>
+                        <tr>
+                            <th>Titulo</th>
+                            <th>Descripcion</th>
+                            <th>Ruta imagen</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha fin</th>
+                            <th>Ver Noticia</th>
+
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for noticia in noticias %}
+                            <tr class="gradeX">
+                                <td>{{noticia.titulo_noticia}}</td>
+                                <td>{{noticia.descripcion}}</td>
+                                <td>{{noticia.pic}}</td>
+                                <td>{{noticia.fecha_inicio}}</td>
+                                <td>{{noticia.fecha_fin}}</td>
+
+
+                                <td><div class="modalTrigger btn btn-primary" data-toggle="modal" data-target="#myModal{{noticia.id}}" >Ver Noticia</div></td>
+                                <!-- Modal -->
+
+                                <div class="modal fade" id="myModal{{noticia.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close " data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">{{noticia.titulo_noticia}}</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <img class="img-responsive" src="{{ noticia.pic.url }}">
+                                                <hr>
+                                                <p> {{ noticia.descripcion }}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tr>
+                        {%endfor%}
+                        </tbody>
+
+                        <tfoot>
+                        <tr>
+                            <th>Titulo</th>
+                            <th>Descripcion</th>
+                            <th>Ruta imagen</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha fin</th>
+                            <th>Ver Noticia</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- A Continuación se incluirá el código que será tenido en cuenta para la edición de un integrante cuando se presiona el botón 'Editar'
+        El código incluye un botón invisible, un modal y un script que hará clic en el botón para que salga el modal con el formulario lleno
+        con la información del integrante en cuestión-->
+{% if edicion %}
+    <button type="button" id="botonModalEdicion" data-toggle="modal" data-target="#editarIntegrante" style="display:none;"></button>
+
+    <div class="modal inmodal" id="editarIntegrante" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content animated fadeIn">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-users modal-icon"></i>
+                    <h4 class="modal-title">Editar Integrante</h4>
+                    <small class="font-bold">Por favor modifique a continuación los campos deseados y dé clic en guardar cambios cuando haya terminado, de lo contrario de clic en cancelar.</small>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post" class="form-horizontal">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{form_edicion.nombres.errors}}
+                            <label class="col-lg-2 control-label">{{form_edicion.nombres.label}}</label>
+                            <div class="col-lg-6">
+                            {{form_edicion.nombres}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{form_edicion.apellidos.errors}}
+                            <label class="col-lg-2 control-label">{{form_edicion.apellidos.label}}</label>
+                            <div class="col-lg-6">{{form_edicion.apellidos}}</div>
+                        </div>
+
+                        <div class="form-group">
+                            {{form_edicion.horas_dedicacion.errors}}
+                            <label class="col-lg-2 control-label">{{form_edicion.horas_dedicacion.label}}</label>
+                            <div class="col-lg-2">{{form_edicion.horas_dedicacion}}</div>
+                        </div>
+
+                        <div class="form-group" id="data_1">
+                            {{form_edicion.fecha_inicio_vin.errors}}
+                            <label class="col-lg-2 control-label">{{form_edicion.fecha_inicio_vin.label}}</label>
+                            <div class="col-lg-4">
+                                <div class="input-group date ">
+                                            <span class="input-group-addon "><i class="fa fa-calendar"></i>
+                                            </span>
+                                            {{form_edicion.fecha_inicio_vin}}
+                                </div>
+                            </div>
+                       </div>
+                        <div class="form-group">
+                                    {{form.actual.errors}}
+                                    <label class="col-lg-2 control-label">¿Actualmente activo?:</label>
+                                    <div class="col-lg-4">
+                                                    {{form_edicion.actual}}
+                                    </div>
+                        </div>
+                        <div class="form-group" id="data_1">
+                            {{form_edicion.fecha_fin_vin.errors}}
+                            <label class="col-lg-2 control-label">{{form_edicion.fecha_fin_vin.label}}</label>
+                            <div class="col-lg-4">
+                                <div class="input-group date ">
+
+                                            <span class="input-group-addon "><i class="fa fa-calendar"></i>
+                                            </span>
+                                            {{form_edicion.fecha_fin_vin}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" href="/integrante/mostrar" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{%endif%}
+<!-- Fin código de edición -->
+
+{% endblock %}
+
+{% block js %}
+    <!-- Data Tables -->
+    <script src="{% static 'js/plugins/dataTables/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'js/plugins/dataTables/dataTables.bootstrap.js' %}"></script>
+    <script src="{% static 'js/plugins/dataTables/dataTables.responsive.js' %}"></script>
+    <!-- Switchery -->
+   <script src="{% static 'js/plugins/switchery/switchery.js' %}"></script>
+
+    {%if edicion %}
+        <script>
+            $(document).ready(function(){
+                $('#botonModalEdicion').click();
+            });
+        </script>
+    {%endif%}
+
+    <!-- Page-Level Scripts -->
+    <script>
+        $(document).ready(function() {
+            $('.dataTables-example').DataTable({
+            responsive: true,
+            "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+            }
+        } );
+
+
+        });
+    </script>
+
+    <!-- Data picker -->
+   <script src="{% static 'js/plugins/datapicker/bootstrap-datepicker.js' %}"></script>
+   <!-- Chosen -->
+    <script src="{% static 'js/plugins/chosen/chosen.jquery.js' %}"></script>
+   <script type="text/javascript">
+            $('#data_1 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('#data_3 .input-group.date').datepicker({
+                startView: 2,
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true
+            });
+
+            $('#data_4 .input-group.date').datepicker({
+                minViewMode: 1,
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                todayHighlight: true
+            });
+
+   </script>
+{% endblock %}

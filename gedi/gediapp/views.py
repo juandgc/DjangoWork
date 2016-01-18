@@ -42,7 +42,7 @@ def inicio(request):
 
     hoy = datetime.datetime.today().strftime("%Y-%m-%d")
 
-    noticias = Noticias.objects.filter(fecha_inicio__lte=hoy,fecha_fin__gte=hoy)
+    noticias = Noticias.objects.filter(fecha_inicio__lte=hoy,fecha_fin__gte=hoy).order_by('?')[:5]
 
     json_news = []
 
@@ -649,15 +649,16 @@ def crop_pic(request):
 
             newim = newim.crop((x1,y1,x2,y2))
             
+            nombreTiempo = datetime.datetime.today().strftime("%Y-%m-%d-%H-%M-%S");
             
-            newim.save("media/noticias/"+datetime.datetime.today().strftime("%Y-%m-%d-%H-%M-%S")+".png","PNG")
+            newim.save("media/noticias/"+nombreTiempo+".png","PNG")
             
 
             #old_image.close()
             
             response_data = {
                 "status":"success",
-                "url":media_url+"noticias/"+datetime.datetime.today().strftime("%Y-%m-%d-%H-%M-%S")+".png",
+                "url":media_url+"noticias/"+nombreTiempo+".png",
                 }
         else:
             response_data = {"status":"error", 'message':form.errors}
@@ -686,3 +687,11 @@ def filterChar(request):
         final["finals"] = json_news
 
         return JsonResponse(final)
+
+
+def mostrar_noticias(request):
+    global profile
+
+    noticias = Noticias.objects.all()
+
+    return render(request, 'mostrar_noticias.html', {'noticias': noticias, 'edicion': False,'profile':profile})
