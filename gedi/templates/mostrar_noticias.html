@@ -44,7 +44,7 @@ class="active"
 
 {% block content %}
 
-    <div class="row">
+    <!--<div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -84,7 +84,6 @@ class="active"
 
 
                                 <td><div class="modalTrigger btn btn-primary" data-toggle="modal" data-target="#myModal{{noticia.id}}" >Ver Noticia</div></td>
-                                <!-- Modal -->
 
                                 <div class="modal fade" id="myModal{{noticia.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                     <div class="modal-dialog" role="document">
@@ -122,92 +121,55 @@ class="active"
                 </div>
             </div>
         </div>
-    </div>
-
-
-<!-- A Continuación se incluirá el código que será tenido en cuenta para la edición de un integrante cuando se presiona el botón 'Editar'
-        El código incluye un botón invisible, un modal y un script que hará clic en el botón para que salga el modal con el formulario lleno
-        con la información del integrante en cuestión-->
-{% if edicion %}
-    <button type="button" id="botonModalEdicion" data-toggle="modal" data-target="#editarIntegrante" style="display:none;"></button>
-
-    <div class="modal inmodal" id="editarIntegrante" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content animated fadeIn">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <i class="fa fa-users modal-icon"></i>
-                    <h4 class="modal-title">Editar Integrante</h4>
-                    <small class="font-bold">Por favor modifique a continuación los campos deseados y dé clic en guardar cambios cuando haya terminado, de lo contrario de clic en cancelar.</small>
+    </div>-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="contenedorClasificados col-lg-12">
+            {% for noticia in noticias %}
+                <div class="clasificado">
+                    <img class="img-responsive" src="{{ noticia.pic }}">
+                    <div class="descripcionCla">
+                        <h3>{{ noticia.titulo_noticia }}</h3>
+                        <p>{{ noticia.descripcion|slice:":150" }}</p>
+                        <a class="verMas" data-toggle="modal" data-target="#myModal{{ forloop.counter }}">
+                            ver más <i class="fa fa-search"></i>
+                        </a>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form action="" method="post" class="form-horizontal">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            {{form_edicion.nombres.errors}}
-                            <label class="col-lg-2 control-label">{{form_edicion.nombres.label}}</label>
-                            <div class="col-lg-6">
-                            {{form_edicion.nombres}}
+                <div class="modal fade" id="myModal{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">{{ noticia.titulo_noticia }}</h4>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            {{form_edicion.apellidos.errors}}
-                            <label class="col-lg-2 control-label">{{form_edicion.apellidos.label}}</label>
-                            <div class="col-lg-6">{{form_edicion.apellidos}}</div>
-                        </div>
-
-                        <div class="form-group">
-                            {{form_edicion.horas_dedicacion.errors}}
-                            <label class="col-lg-2 control-label">{{form_edicion.horas_dedicacion.label}}</label>
-                            <div class="col-lg-2">{{form_edicion.horas_dedicacion}}</div>
-                        </div>
-
-                        <div class="form-group" id="data_1">
-                            {{form_edicion.fecha_inicio_vin.errors}}
-                            <label class="col-lg-2 control-label">{{form_edicion.fecha_inicio_vin.label}}</label>
-                            <div class="col-lg-4">
-                                <div class="input-group date ">
-                                            <span class="input-group-addon "><i class="fa fa-calendar"></i>
-                                            </span>
-                                            {{form_edicion.fecha_inicio_vin}}
-                                </div>
+                            <div class="modal-body">
+                                <img src="{{ noticia.pic }}" class="img-responsive">
+                                <hr>
+                                <p class="descModal">
+                                    {{ noticia.descripcion }}
+                                </p>
                             </div>
-                       </div>
-                        <div class="form-group">
-                                    {{form.actual.errors}}
-                                    <label class="col-lg-2 control-label">¿Actualmente activo?:</label>
-                                    <div class="col-lg-4">
-                                                    {{form_edicion.actual}}
-                                    </div>
-                        </div>
-                        <div class="form-group" id="data_1">
-                            {{form_edicion.fecha_fin_vin.errors}}
-                            <label class="col-lg-2 control-label">{{form_edicion.fecha_fin_vin.label}}</label>
-                            <div class="col-lg-4">
-                                <div class="input-group date ">
-
-                                            <span class="input-group-addon "><i class="fa fa-calendar"></i>
-                                            </span>
-                                            {{form_edicion.fecha_fin_vin}}
-                                </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-white" href="/integrante/mostrar" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+            {% endfor %}
+
         </div>
     </div>
-{%endif%}
-<!-- Fin código de edición -->
+</div>
+
+
+
+
 
 {% endblock %}
 
 {% block js %}
+
     <!-- Data Tables -->
     <script src="{% static 'js/plugins/dataTables/jquery.dataTables.js' %}"></script>
     <script src="{% static 'js/plugins/dataTables/dataTables.bootstrap.js' %}"></script>
